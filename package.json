@@ -1,0 +1,34 @@
+{
+  "name": "email_address",
+  "version": "0.0.0",
+  "description": "[Under Development!] A Javascript language library for validating and working with Email Addresses. By default, it validates against a \"conventional\" subset of the RFC specification which consitute user email addresses.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afair/email_address.js.git"
+  },
+  "keywords": [
+    "email",
+    "address",
+    "emailaddress",
+    "smtputf8",
+    "validate",
+    "parse",
+    "compare",
+    "match",
+    "internationalization"
+  ],
+  "author": "Allen Fair <allen.fair@gmail.com> (http://allenfair.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/afair/email_address.js/issues"
+  },
+  "homepage": "https://github.com/afair/email_address.js#readme",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  }
+}
