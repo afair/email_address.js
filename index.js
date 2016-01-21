@@ -4,8 +4,12 @@
 
 module.exports = {
   isValid: function(address) {
-    return true;
+    var lh = address.split("@");
+    var validLocal = /^[\a-z\d]+([\.\-\+\'_][\a-z\d]+)*$/i.test(lh[0]);
+    var validHost  = /^[\a-z\d]+(?:(?:\-{1,2}|\.)[\a-z\d]+)*$/i.test(lh[1]);
+    return lh.length==2 && validLocal && validHost ? true : false;
   },
+
   isCompliant: function(address) {
     return true;
   },

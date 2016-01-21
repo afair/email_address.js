@@ -6,8 +6,10 @@ var should = require('chai').should(),
 describe('#isValid', function() {
   it('accepts good', function() {
     isValid('allen@example.com').should.equal(true);
+    isValid('allen+tag@example.com').should.equal(true);
   });
   it('rejects bad', function() {
     isValid('.allen@example.com').should.equal(false);
+    isValid('allen.at.example.com').should.equal(false);
   });
 });
