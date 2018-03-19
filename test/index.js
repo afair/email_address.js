@@ -1,15 +1,19 @@
 var should = require('chai').should(),
     email_address = require('../index'),
-    isValid = email_address.isValid,
-    isCompliant = email_address;
+    local = require('../lib/local'),
+    host = require('../lib/host');
 
 describe('#isValid', function() {
   it('accepts good', function() {
-    isValid('allen@example.com').should.equal(true);
-    isValid('allen+tag@example.com').should.equal(true);
+    em = new email_address('allen@example.com');
+    em.isValid().should.equal(true);
+    em = new email_address('allen+tag@example.com');
+    em.isValid().should.equal(true);
   });
   it('rejects bad', function() {
-    isValid('.allen@example.com').should.equal(false);
-    isValid('allen.at.example.com').should.equal(false);
+    em = new email_address('.allen@example.com');
+    em.isValid().should.equal(false);
+    em = new email_address('allen@oops@example.com');
+    em.isValid().should.equal(false);
   });
 });

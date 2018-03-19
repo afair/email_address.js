@@ -4,6 +4,7 @@
   "description": "[Under Development!] A Javascript language library for validating and working with Email Addresses. By default, it validates against a \"conventional\" subset of the RFC specification which consitute user email addresses.",
   "main": "index.js",
   "scripts": {
+    "dev": "./node_modules/.bin/run-when-changed --watch '*.js' --exec 'echo %s && ./node_modules/.bin/mocha --reporter spec' --watch '**/*.js' --exec 'echo %s && ./node_modules/.bin/mocha --reporter spec'",
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
@@ -21,7 +22,7 @@
     "match",
     "internationalization"
   ],
-  "author": "Allen Fair <allen.fair@gmail.com> (http://allenfair.com)",
+  "author": "Allen Fair <allen.fair@gmail.com> @allenfair <http://allenfair.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/afair/email_address.js/issues"
@@ -29,6 +30,10 @@
   "homepage": "https://github.com/afair/email_address.js#readme",
   "devDependencies": {
     "chai": "^3.4.1",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "run-when-changed": "^2.0.3"
+  },
+  "dependencies": {
+    "punycode": "^2.1.0"
   }
 }
