@@ -11,30 +11,31 @@ const Config= require("./lib/config");
 var   globalConfig = undefined;
 
 class EmailAddress {
-  constructor(email_address_string, config={}) {
+  constructor(emailAddressString, config={}) {
     if (globalConfig) this.config = Config(globalConfig);
     this.config = Config(config, this.config);
 
-    if (typeof email_address_string !== 'string'
-        || email_address_string instanceof String) {
-      email_address_string = "";
+    if (typeof emailAddressString !== 'string'
+        || emailAddressString instanceof String) {
+      emailAddressString = "";
     }
-    this.string = email_address_string;
+    this.string = emailAddressString;
     var at = this.string.lastIndexOf("@");
     if (at === -1) { // No @host
-      this.local_string = this.string;
-      this.host_string = "";
+      this.localString = this.string;
+      this.hostString = "";
       // Or resolve.conf search parameter?
     } else if (at === 0) { // No local
-      this.local_string = "";
-      this.host_string = this.string.substr(1);
+      this.localString = "";
+      this.hostString = this.string.substr(1);
     } else {
-      this.local_string = this.string.substr(0, at);
-      this.host_string = this.string.substr(at + 1);
+      this.localString = this.string.substr(0, at);
+      this.hostString = this.string.substr(at + 1);
     }
     // Set host first as it updates config for local part
-    this.host = new Host(this.host_string, this.config);
-    this.local = new Local(this.local_string, this.config);
+    this.host = new Host(this.hostString, this.config);
+    this.local = new Local(this.localString, this.config);
+    debugger;
   }
 
   get original() {
@@ -52,8 +53,8 @@ class EmailAddress {
   }
 
   // EmailAddress.isValid("allen@example.com");
-  static isValid(email_address_string, config={}) {
-    return (new EmailAddress(email_address_string, config)).isValid();
+  static isValid(emailAddressString, config={}) {
+    return (new EmailAddress(emailAddressString, config)).isValid();
   }
 
   // EmailAddress.config({setting:value,...});
