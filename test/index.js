@@ -5,11 +5,12 @@ var should = require('chai').should(),
 
 describe('#isValid', function() {
   it('accepts good', function() {
-    em = new email_address('allen@example.com');
-    em.error().should.equal("hostNoMail");
-    em = new email_address('allen+tag@example.com');
+    var em = new email_address('allen@example.com');
+    em.isValid().should.equal(true);
+    em = new email_address('allenx+tag@gmail.com');
     em.isValid().should.equal(true);
   });
+
   it('rejects bad', function() {
     em = new email_address('.allen@example.com');
     em.isValid().should.equal(false);

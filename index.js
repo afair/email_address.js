@@ -1,8 +1,8 @@
 /******************************************************************************
-/* Module: email_address
+/* Module:  email_address
 /* Purpose: Email Address Validation and Introspection
-/*   using different forms including standard and conventional.
-/* Author: Allen Fair <allen.fair@gmail.com>  @allenfair
+/*          using different forms including standard and conventional.
+/* Author:  Allen Fair <allen.fair@gmail.com>  @allenfair
 /*****************************************************************************/
 
 const Local = require("./lib/local");
@@ -19,9 +19,10 @@ class EmailAddress {
       emailAddressString = "";
     }
 
-    this.original = emailAddressString;
+    this.original  = emailAddressString;
+    this.errorCode = null;
     this.parse();
-    this.host = new Host(this.hostString, this.config); // Must be before local!
+    this.host  = new Host(this.hostString, this.config); // Must be before local!
     this.local = new Local(this.localString, this.config);
     this.setFormat(this.config.format);
     this.isValid();
@@ -37,14 +38,20 @@ class EmailAddress {
 
   isValid() {
     this.errorCode =  this.formatter.error();
+    this.valid = this.errorCode ? false : true;
     return this.valid;
+  }
+
+  // Asynchronous lookup of hostname in DNS.
+  validDNS() {
+    // this.hostMx = new HostMx(this.host);
+    // return this.hostMx.lookup(); //=> Promise() ?
   }
 
   error() {
     if (this.isValid()) {
       return null;
     } else {
-      console.log("err", this.errorCode);
       return this.config.errors[this.errorCode] || this.errorCode;
     }
   }
@@ -98,7 +105,7 @@ class EmailAddress {
     else {
       throw "EmailAddress formatter " + f + " is not implemented";
     }
-    return this.formatter = new formatter(this);
+    return this.formatter = new formatter(this, this.config);
   }
 
 }
