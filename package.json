@@ -7,6 +7,9 @@
     "dev": "./node_modules/.bin/run-when-changed --watch '*.js' --exec 'echo %s && ./node_modules/.bin/mocha --reporter spec' --watch '**/*.js' --exec 'echo %s && ./node_modules/.bin/mocha --reporter spec'",
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
+  "bin": {
+    "emailaddress": "bin/emailaddress.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/afair/email_address.js.git"
@@ -34,8 +37,11 @@
     "run-when-changed": "^2.0.3"
   },
   "dependencies": {
+    "argv": "0.0.2",
     "cidr-address": "^0.1.1",
+    "md5": "^2.2.1",
     "npm": "^5.7.1",
-    "punycode": "^2.1.0"
+    "punycode": "^2.1.0",
+    "sha1": "^1.1.1"
   }
 }

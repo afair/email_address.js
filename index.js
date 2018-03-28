@@ -5,9 +5,13 @@
 /* Author:  Allen Fair <allen.fair@gmail.com>  @allenfair
 /*****************************************************************************/
 
+const md5   = require("md5");
+const sha1  = require("sha1");
 const Local = require("./lib/local");
 const Host  = require("./lib/host");
 const Config= require("./lib/config");
+const CanonicalEmailAddress= require("./lib/canonical");
+const RedactedEmailAddress = require("./lib/redacted");
 var   globalConfig = undefined;
 
 class EmailAddress {
@@ -32,20 +36,64 @@ class EmailAddress {
   /* Operations and Validations
   /****************************************************************************/
 
+  data() {
+    return {
+      original:  this.original,
+      format:    this.config.format,
+      address:   this.toString(),
+      canonical: this.canonical(),
+      redacted:  this.redacted(),
+      md5:       this.digest('md5'),
+      sha1:      this.digest('sha1'),
+      local:     this.local.data(),
+      host:      this.host.data(),
+    //exchangers:this.hostMx['mxers'],
+      valid:     this.valid,
+      errorCode: this.errorCode
+    };
+  }
+
   toString() {
     return this.formatter.toString();
   }
 
-  isValid() {
-    this.errorCode =  this.formatter.error();
-    this.valid = this.errorCode ? false : true;
-    return this.valid;
+  canonical() {
+    var version = new CanonicalEmailAddress(this, this.config);
+    return version.toString();
   }
 
-  // Asynchronous lookup of hostname in DNS.
-  validDNS() {
-    // this.hostMx = new HostMx(this.host);
-    // return this.hostMx.lookup(); //=> Promise() ?
+  redacted() {
+    var version = new RedactedEmailAddress(this, this.config);
+    return version.toString();
+  }
+
+  digest(method='md5') {
+    let ea = this.toString().toLowerCase();
+    if (method === 'md5') {
+      return md5(ea);
+    } else if (method === 'sha1') {
+      return sha1(ea);
+    }
+  }
+
+  // to perform hostnane DNS validation pass a callback: (valid, errorCode) => {}
+  // which should only work under Node, not in the browser, which doesn't support
+  // DNS Lookups. The dns check fuction will be called asynchronously.
+  isValid(checkDnsFn) {
+    this.errorCode =  this.formatter.error();
+    this.valid = this.errorCode ? false : true;
+
+    if (checkDnsFn) {
+      if (!this.valid) {
+        fn(false, this,errorCode);
+      } else {
+        const HostMx = require("./lib/hostmx");
+        this.hostMx  = new HostMx(this.host.hostname, this.config);
+        this.hostMx.validMx(checkDnsFn);
+      }
+    }
+
+    return this.valid;
   }
 
   error() {
