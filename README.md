@@ -1,10 +1,12 @@
-# email_address module
-Email Address Validation and Inspection for Javascript.
+# email_address - NPM Module
 
-This is a port of the ruby email_address gem.
+Email Address Validation and Inspection for Javascript and Node.js.
+It implements different forms of email addresses: 
 
-    NOTE: This library is still in early development, but may give desired
-    functionality for those willing to handle the flux of change to a young project.
+* Standard - RFC Compliant, what you think you want, but you don't.
+* Conventional - conforms to user account email address, what you
+  probably intend (Default).
+* Others! See below.
 
 ## Quick Start
 
@@ -37,13 +39,53 @@ DNS hostname, and that it is configured for email via MX records.
 DNS operations are asynchronous, so you'll have to use a callback.
 How fun!
 
-    em = new email_address('allen@example.com');
+    em = new EmailAddress('allen@example.com');
     em.isValid( (ok, err) =>{
       if (!ok) throw err;
     });
 
 This throws a "hostNoMail" error as the example.com domain does not
 have any MX records and accepts no email.
+
+You may also instantiate an Email Address object and inspect it. Generally, these
+objects are not mutable; it will transform an address into the requested type,
+usually by lower casing the letters. The data() method returns the internal
+parsed fields in an object.
+
+    em = new EmailAddress('ALLEn+github@example.com');
+    em.canonical() //=> allen@example.com
+    em.digest()    //=> 301b2924ff92e39a727c85f8c72c5720
+    em.data()      //=>
+     { original: 'ALLEn+github@example.com',
+       format: 'conventional',
+       address: 'allen+github@example.com',
+       canonical: 'allen@example.com',
+       redacted: '{90949f4bbb9bc99a9fa6cea3b40e22f399f58d66}@example.com',
+       md5: '301b2924ff92e39a727c85f8c72c5720',
+       sha1: '90949f4bbb9bc99a9fa6cea3b40e22f399f58d66',
+       local:
+        { local: 'ALLEn+github',
+          mailbox: 'allen+github',
+          account: 'allen',
+          tag: 'github',
+          valid: true,
+          errorCode: null },
+       host:
+        { name: 'example.com',
+          canonicalName: 'example.com',
+          ip: [ null, undefined ],
+          provider: 'example.com',
+          subdomains: undefined,
+          registrationName: 'example',
+          domainName: 'example.com',
+          tld2: 'com',
+          tld: 'com',
+          valid: true,
+          errorCode: null },
+       valid: true,
+       errorCode: null }
+
+### Command Line Interface
 
 An `emailaddress` CLI command is provided for manually checking addresses.
 
@@ -78,7 +120,7 @@ This library derives from my philosophy of email addresses: validating to the RF
 almost as good as not validating at all. It allows a lot of things that we don't put in modern
 user email addresses, such as:
 
-* Case Sensitive
+* Case Sensitivity. Standard addresses are mixed case, conventional are lower-cased.
 * Allows a lot of special characters.
 * Allows spaces and @ symbols, when combined with double-quoted sub-strings
 * Has optional comments at the start and end of the local and host parts of the address.
@@ -153,7 +195,7 @@ we can keep this to prevent collisions. Redacted addresses are of the form:
     DIGEST=yahoo.com@redacted.emailaddress.cc
     DIGEST@yahoo.com.redacted
 
-This library uses the first format.
+This library uses the first format. (This may still change.)
 
 ### Other forms (Not Implemented)
 
