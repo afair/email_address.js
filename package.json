@@ -1,7 +1,7 @@
 {
   "name": "email_address",
   "version": "0.1.0",
-  "description": "[Under Development!] A Javascript language library for validating and working with Email Addresses. By default, it validates against a \"conventional\" subset of the RFC specification which consitute user email addresses.",
+  "description": "A Javascript language library for validating and working with Email Addresses. By default, it validates against a \"conventional\" subset of the RFC specification which consitute user email addresses.",
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/run-when-changed --watch '*.js' --exec 'echo %s && ./node_modules/.bin/mocha --reporter spec' --watch '**/*.js' --exec 'echo %s && ./node_modules/.bin/mocha --reporter spec'",
