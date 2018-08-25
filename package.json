@@ -1,6 +1,6 @@
 {
   "name": "email_address",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Javascript language library for validating and working with Email Addresses. By default, it validates against a \"conventional\" subset of the RFC specification which consitute user email addresses.",
   "main": "index.js",
   "scripts": {
@@ -40,7 +40,7 @@
     "argv": "0.0.2",
     "cidr-address": "^0.1.1",
     "md5": "^2.2.1",
-    "npm": "^5.7.1",
+    "npm": "^6.4.0",
     "punycode": "^2.1.0",
     "sha1": "^1.1.1"
   }
