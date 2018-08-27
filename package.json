@@ -39,6 +39,7 @@
   "dependencies": {
     "argv": "0.0.2",
     "cidr-address": "^0.1.1",
+    "express": "^4.16.3",
     "md5": "^2.2.1",
     "npm": "^6.4.0",
     "punycode": "^2.1.0",

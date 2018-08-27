@@ -32,6 +32,15 @@ class EmailAddress {
     this.isValid();
   }
 
+  static async info(email) {
+    let emailAddress = new EmailAddress(email)
+    await emailAddress.isValid(true)
+    if (emailAddress.hostMx) {
+      await emailAddress.hostMx.exchangerIps()
+    }
+    return emailAddress.data()
+  }
+
   /****************************************************************************
   /* Operations and Validations
   /****************************************************************************/
@@ -47,7 +56,7 @@ class EmailAddress {
       sha1:      this.digest('sha1'),
       local:     this.local.data(),
       host:      this.host.data(),
-    //exchangers:this.hostMx['mxers'],
+      exchangers: this.hostMx === undefined ? [] : this.hostMx.mx,
       valid:     this.valid,
       errorCode: this.errorCode
     };
@@ -76,20 +85,17 @@ class EmailAddress {
     }
   }
 
-  // to perform hostnane DNS validation pass a callback: (valid, errorCode) => {}
-  // which should only work under Node, not in the browser, which doesn't support
-  // DNS Lookups. The dns check fuction will be called asynchronously.
-  isValid(checkDnsFn) {
+  async isValid(checkDns=false) {
     this.errorCode =  this.formatter.error();
     this.valid = this.errorCode ? false : true;
 
-    if (checkDnsFn) {
+    if (checkDns) {
       if (!this.valid) {
-        fn(false, this,errorCode);
+        //fn(false, this,errorCode);
       } else {
         const HostMx = require("./lib/hostmx");
         this.hostMx  = new HostMx(this.host.hostname, this.config);
-        this.hostMx.validMx(checkDnsFn);
+        await this.hostMx.validMailhost();
       }
     }
 
